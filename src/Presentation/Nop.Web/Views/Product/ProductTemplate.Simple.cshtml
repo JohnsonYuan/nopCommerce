@@ -73,6 +73,9 @@
                             </div>
                         }
                         @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsOverviewTop, additionalData = Model })
+                        <!--product author-->
+                        @await Html.PartialAsync("_ProductAuthor", Model.Author)
+
                         <!--product reviews-->
                         @await Html.PartialAsync("_ProductReviewOverview", Model.ProductReviewOverview)
                         <!--manufacturers-->
