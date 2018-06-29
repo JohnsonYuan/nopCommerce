@@ -41,6 +41,7 @@ namespace Nop.Data.Mapping.Catalog
             builder.Property(product => product.BasepriceAmount).HasColumnType("decimal(18, 4)");
             builder.Property(product => product.BasepriceBaseAmount).HasColumnType("decimal(18, 4)");
             builder.Property(product => product.OverriddenGiftCardAmount).HasColumnType("decimal(18, 4)");
+            builder.Property(product => product.Author).HasMaxLength(100);
 
             builder.Ignore(product => product.ProductType);
             builder.Ignore(product => product.BackorderMode);

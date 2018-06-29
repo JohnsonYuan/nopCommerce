@@ -555,6 +555,11 @@ namespace Nop.Core.Domain.Catalog
         public DateTime UpdatedOnUtc { get; set; }
 
         /// <summary>
+        /// Gets or sets the product author
+        /// </summary>
+        public string Author { get; set; }
+
+        /// <summary>
         /// Gets or sets the product type
         /// </summary>
         public ProductType ProductType

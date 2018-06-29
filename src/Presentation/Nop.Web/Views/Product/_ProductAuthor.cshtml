@@ -1,0 +1,18 @@
+@model string
+
+
+<div class="additional-details">
+    <div class="stock">
+        <span class="label">@T("Products.Author"):</span>
+        <span class="value">
+            @if (!string.IsNullOrWhiteSpace(Model))
+            {
+                @Model
+            }
+            else
+            {
+                @T("Products.NoAuthor")
+            }
+        </span>
+    </div>
+</div>

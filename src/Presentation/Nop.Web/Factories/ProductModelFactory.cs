@@ -1190,6 +1190,7 @@ namespace Nop.Web.Factories
             {
                 Id = product.Id,
                 Name = product.GetLocalized(x => x.Name),
+                Author = product.GetLocalized(x => x.Author),
                 ShortDescription = product.GetLocalized(x => x.ShortDescription),
                 FullDescription = product.GetLocalized(x => x.FullDescription),
                 MetaKeywords = product.GetLocalized(x => x.MetaKeywords),
@@ -1207,7 +1208,7 @@ namespace Nop.Web.Factories
                 ManageInventoryMethod = product.ManageInventoryMethod,
                 StockAvailability = product.FormatStockMessage("", _localizationService, _productAttributeParser, _dateRangeService, _productAttributeService),
                 HasSampleDownload = product.IsDownload && product.HasSampleDownload,
-                DisplayDiscontinuedMessage = !product.Published && _catalogSettings.DisplayDiscontinuedMessageForUnpublishedProducts
+                DisplayDiscontinuedMessage = !product.Published && _catalogSettings.DisplayDiscontinuedMessageForUnpublishedProducts,
             };
 
             //automatically generate product description?
