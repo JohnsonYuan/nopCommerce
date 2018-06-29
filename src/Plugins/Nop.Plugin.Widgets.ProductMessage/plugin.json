@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "Product Message",
+  "SystemName": "Widgets.ProductMessage",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.10" ],
+  "Author": "yuan",
+  "DisplayOrder": 2,
+  "FileName": "Nop.Plugin.Widgets.ProductMessage.dll",
+  "Description": "This plugin allows you to display a message in product page"
+}
