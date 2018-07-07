@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -57,7 +58,7 @@ namespace Nop.Web.Framework.UI
         /// <param name="hostingEnvironment">Hosting environment</param>
         /// <param name="cacheManager">Cache manager</param>
         /// <param name="fileProvider">File provider</param>
-        public PageHeadBuilder(SeoSettings seoSettings, 
+        public PageHeadBuilder(SeoSettings seoSettings,
             IHostingEnvironment hostingEnvironment,
             IStaticCacheManager cacheManager,
             INopFileProvider fileProvider)
@@ -110,7 +111,6 @@ namespace Nop.Web.Framework.UI
             }
             //ensure only valid chars
             hash = SeoExtensions.GetSeName(hash);
-            
             return hash;
         }
 
@@ -137,7 +137,7 @@ namespace Nop.Web.Framework.UI
         {
             if (string.IsNullOrEmpty(part))
                 return;
-            
+
             _titleParts.Insert(0, part);
         }
         /// <summary>
@@ -167,7 +167,7 @@ namespace Nop.Web.Framework.UI
                                 result = string.Join(_seoSettings.PageTitleSeparator, specificTitle, _seoSettings.DefaultTitle);
                             }
                             break;
-                            
+
                     }
                 }
                 else
@@ -192,7 +192,7 @@ namespace Nop.Web.Framework.UI
         {
             if (string.IsNullOrEmpty(part))
                 return;
-            
+
             _metaDescriptionParts.Add(part);
         }
         /// <summary>
@@ -203,7 +203,7 @@ namespace Nop.Web.Framework.UI
         {
             if (string.IsNullOrEmpty(part))
                 return;
-            
+
             _metaDescriptionParts.Insert(0, part);
         }
         /// <summary>
@@ -225,7 +225,7 @@ namespace Nop.Web.Framework.UI
         {
             if (string.IsNullOrEmpty(part))
                 return;
-            
+
             _metaKeywordParts.Add(part);
         }
         /// <summary>
@@ -320,7 +320,7 @@ namespace Nop.Web.Framework.UI
                 return "";
 
             var debugModel = _hostingEnvironment.IsDevelopment();
-            
+
             if (!bundleFiles.HasValue)
             {
                 //use setting if no value is specified
@@ -378,21 +378,20 @@ namespace Nop.Web.Framework.UI
                             //BundleHandler.AddBundle(configFilePath, bundle);
 
                             //process
-                            _processor.Process(configFilePath, new List<Bundle> { bundle });
+                            _processor.Process(configFilePath, new List<Bundle> {bundle});
                             _cacheManager.Set(cacheKey, false, RecheckBundledFilesPeriod);
                         }
                     }
                     //render
-                    result.AppendFormat("<script src=\"{0}\" type=\"{1}\"></script>", urlHelper.Content("~/bundles/" + outputFileName + ".min.js"), MimeTypes.TextJavascript);
+                    result.AppendFormat("<script src=\"{0}\"></script>", urlHelper.Content("~/bundles/" + outputFileName + ".min.js"));
                     result.Append(Environment.NewLine);
                 }
-
 
                 //parts to not bundle
                 foreach (var item in partsToDontBundle)
                 {
                     var src = debugModel ? item.DebugSrc : item.Src;
-                    result.AppendFormat("<script {2}src=\"{0}\" type=\"{1}\"></script>", urlHelper.Content(src), MimeTypes.TextJavascript, item.IsAsync ? "async " : "");
+                    result.AppendFormat("<script {1}src=\"{0}\"></script>", urlHelper.Content(src), item.IsAsync ? "async " : "");
                     result.Append(Environment.NewLine);
                 }
                 return result.ToString();
@@ -404,7 +403,7 @@ namespace Nop.Web.Framework.UI
                 foreach (var item in _scriptParts[location].Distinct())
                 {
                     var src = debugModel ? item.DebugSrc : item.Src;
-                    result.AppendFormat("<script {2}src=\"{0}\" type=\"{1}\"></script>", urlHelper.Content(src), MimeTypes.TextJavascript, item.IsAsync ? "async ":"");
+                    result.AppendFormat("<script {1}src=\"{0}\"></script>", urlHelper.Content(src), item.IsAsync ? "async " : "");
                     result.Append(Environment.NewLine);
                 }
                 return result.ToString();
@@ -531,7 +530,7 @@ namespace Nop.Web.Framework.UI
 
 
             var debugModel = _hostingEnvironment.IsDevelopment();
-            
+
             if (!bundleFiles.HasValue)
             {
                 //use setting if no value is specified
@@ -600,10 +599,11 @@ namespace Nop.Web.Framework.UI
                             //BundleHandler.AddBundle(configFilePath, bundle);
 
                             //process
-                            _processor.Process(configFilePath, new List<Bundle> {bundle});
+                            _processor.Process(configFilePath, new List<Bundle> { bundle });
                             _cacheManager.Set(cacheKey, false, RecheckBundledFilesPeriod);
                         }
                     }
+
                     //render
                     result.AppendFormat("<link href=\"{0}\" rel=\"stylesheet\" type=\"{1}\" />", urlHelper.Content("~/bundles/" + outputFileName + ".min.css"), MimeTypes.TextCss);
                     result.Append(Environment.NewLine);
@@ -641,7 +641,7 @@ namespace Nop.Web.Framework.UI
         {
             if (string.IsNullOrEmpty(part))
                 return;
-                       
+
             _canonicalUrlParts.Add(part);
         }
         /// <summary>
@@ -652,7 +652,7 @@ namespace Nop.Web.Framework.UI
         {
             if (string.IsNullOrEmpty(part))
                 return;
-                       
+
             _canonicalUrlParts.Insert(0, part);
         }
         /// <summary>
@@ -743,7 +743,7 @@ namespace Nop.Web.Framework.UI
             var result = string.Join(" ", _pageCssClassParts.AsEnumerable().Reverse().ToArray());
             return result;
         }
-        
+
         /// <summary>
         /// Specify "edit page" URL
         /// </summary>
@@ -760,7 +760,7 @@ namespace Nop.Web.Framework.UI
         {
             return _editPageUrl;
         }
-        
+
         /// <summary>
         /// Specify system name of admin menu item that should be selected (expanded)
         /// </summary>
@@ -779,7 +779,7 @@ namespace Nop.Web.Framework.UI
         }
 
         #endregion
-        
+
         #region Nested classes
 
         /// <summary>

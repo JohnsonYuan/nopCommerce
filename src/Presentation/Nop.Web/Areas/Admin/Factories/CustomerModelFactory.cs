@@ -11,8 +11,6 @@ using Nop.Core.Domain.Customers;
 using Nop.Core.Domain.Gdpr;
 using Nop.Core.Domain.Media;
 using Nop.Core.Domain.Orders;
-using Nop.Core.Domain.Payments;
-using Nop.Core.Domain.Shipping;
 using Nop.Core.Domain.Tax;
 using Nop.Services.Affiliates;
 using Nop.Services.Authentication.External;
@@ -52,15 +50,12 @@ namespace Nop.Web.Areas.Admin.Factories
         private readonly IAclSupportedModelFactory _aclSupportedModelFactory;
         private readonly IAddressAttributeFormatter _addressAttributeFormatter;
         private readonly IAddressAttributeModelFactory _addressAttributeModelFactory;
-        private readonly IAddressAttributeParser _addressAttributeParser;
-        private readonly IAddressAttributeService _addressAttributeService;
         private readonly IAffiliateService _affiliateService;
         private readonly IBackInStockSubscriptionService _backInStockSubscriptionService;
         private readonly IBaseAdminModelFactory _baseAdminModelFactory;
         private readonly ICustomerActivityService _customerActivityService;
         private readonly ICustomerAttributeParser _customerAttributeParser;
         private readonly ICustomerAttributeService _customerAttributeService;
-        private readonly ICustomerReportService _customerReportService;
         private readonly ICustomerService _customerService;
         private readonly IDateTimeHelper _dateTimeHelper;
         private readonly IExternalAuthenticationService _externalAuthenticationService;
@@ -94,15 +89,12 @@ namespace Nop.Web.Areas.Admin.Factories
             IAclSupportedModelFactory aclSupportedModelFactory,
             IAddressAttributeFormatter addressAttributeFormatter,
             IAddressAttributeModelFactory addressAttributeModelFactory,
-            IAddressAttributeParser addressAttributeParser,
-            IAddressAttributeService addressAttributeService,
             IAffiliateService affiliateService,
             IBackInStockSubscriptionService backInStockSubscriptionService,
             IBaseAdminModelFactory baseAdminModelFactory,
             ICustomerActivityService customerActivityService,
             ICustomerAttributeParser customerAttributeParser,
             ICustomerAttributeService customerAttributeService,
-            ICustomerReportService customerReportService,
             ICustomerService customerService,
             IDateTimeHelper dateTimeHelper,
             IExternalAuthenticationService externalAuthenticationService,
@@ -132,15 +124,12 @@ namespace Nop.Web.Areas.Admin.Factories
             this._aclSupportedModelFactory = aclSupportedModelFactory;
             this._addressAttributeFormatter = addressAttributeFormatter;
             this._addressAttributeModelFactory = addressAttributeModelFactory;
-            this._addressAttributeParser = addressAttributeParser;
-            this._addressAttributeService = addressAttributeService;
             this._affiliateService = affiliateService;
             this._backInStockSubscriptionService = backInStockSubscriptionService;
             this._baseAdminModelFactory = baseAdminModelFactory;
             this._customerActivityService = customerActivityService;
             this._customerAttributeParser = customerAttributeParser;
             this._customerAttributeService = customerAttributeService;
-            this._customerReportService = customerReportService;
             this._customerService = customerService;
             this._dateTimeHelper = dateTimeHelper;
             this._externalAuthenticationService = externalAuthenticationService;
@@ -469,44 +458,7 @@ namespace Nop.Web.Areas.Admin.Factories
             searchModel.SetGridPageSize();
 
             return searchModel;
-        }
-
-        /// <summary>
-        /// Prepare best customers report search model
-        /// </summary>
-        /// <param name="searchModel">Best customers report search model</param>
-        /// <returns>Best customers report search model</returns>
-        protected virtual BestCustomersReportSearchModel PrepareBestCustomersReportSearchModel(BestCustomersReportSearchModel searchModel)
-        {
-            if (searchModel == null)
-                throw new ArgumentNullException(nameof(searchModel));
-
-            //prepare available order, payment and shipping statuses
-            _baseAdminModelFactory.PrepareOrderStatuses(searchModel.AvailableOrderStatuses);
-            _baseAdminModelFactory.PreparePaymentStatuses(searchModel.AvailablePaymentStatuses);
-            _baseAdminModelFactory.PrepareShippingStatuses(searchModel.AvailableShippingStatuses);
-
-            //prepare page parameters
-            searchModel.SetGridPageSize();
-
-            return searchModel;
-        }
-
-        /// <summary>
-        /// Prepare registered customers report search model
-        /// </summary>
-        /// <param name="searchModel">Registered customers report search model</param>
-        /// <returns>Registered customers report search model</returns>
-        protected virtual RegisteredCustomersReportSearchModel PrepareRegisteredCustomersReportSearchModel(RegisteredCustomersReportSearchModel searchModel)
-        {
-            if (searchModel == null)
-                throw new ArgumentNullException(nameof(searchModel));
-
-            //prepare page parameters
-            searchModel.SetGridPageSize();
-
-            return searchModel;
-        }
+        }        
 
         /// <summary>
         /// Prepare customer shopping cart search model
@@ -1005,127 +957,7 @@ namespace Nop.Web.Areas.Admin.Factories
             };
 
             return model;
-        }
-
-        /// <summary>
-        /// Prepare customer reports search model
-        /// </summary>
-        /// <param name="searchModel">Customer reports search model</param>
-        /// <returns>Customer reports search model</returns>
-        public virtual CustomerReportsSearchModel PrepareCustomerReportsSearchModel(CustomerReportsSearchModel searchModel)
-        {
-            if (searchModel == null)
-                throw new ArgumentNullException(nameof(searchModel));
-
-            //prepare nested search models
-            PrepareBestCustomersReportSearchModel(searchModel.BestCustomersByOrderTotal);
-            PrepareBestCustomersReportSearchModel(searchModel.BestCustomersByNumberOfOrders);
-            PrepareRegisteredCustomersReportSearchModel(searchModel.RegisteredCustomers);
-
-            return searchModel;
-        }
-
-        /// <summary>
-        /// Prepare paged best customers report list model
-        /// </summary>
-        /// <param name="searchModel">Best customers report search model</param>
-        /// <returns>Best customers report list model</returns>
-        public virtual BestCustomersReportListModel PrepareBestCustomersReportListModel(BestCustomersReportSearchModel searchModel)
-        {
-            if (searchModel == null)
-                throw new ArgumentNullException(nameof(searchModel));
-
-            //get parameters to filter
-            var startDateValue = !searchModel.StartDate.HasValue ? null
-                : (DateTime?)_dateTimeHelper.ConvertToUtcTime(searchModel.StartDate.Value, _dateTimeHelper.CurrentTimeZone);
-            var endDateValue = !searchModel.EndDate.HasValue ? null
-                : (DateTime?)_dateTimeHelper.ConvertToUtcTime(searchModel.EndDate.Value, _dateTimeHelper.CurrentTimeZone).AddDays(1);
-            var orderStatus = searchModel.OrderStatusId > 0 ? (OrderStatus?)searchModel.OrderStatusId : null;
-            var paymentStatus = searchModel.PaymentStatusId > 0 ? (PaymentStatus?)searchModel.PaymentStatusId : null;
-            var shippingStatus = searchModel.ShippingStatusId > 0 ? (ShippingStatus?)searchModel.ShippingStatusId : null;
-
-            //get report items
-            var reportItems = _customerReportService.GetBestCustomersReport(createdFromUtc: startDateValue,
-                createdToUtc: endDateValue,
-                os: orderStatus,
-                ps: paymentStatus,
-                ss: shippingStatus,
-                orderBy: searchModel.OrderBy,
-                pageIndex: searchModel.Page - 1, pageSize: searchModel.PageSize);
-
-            //prepare list model
-            var model = new BestCustomersReportListModel
-            {
-                Data = reportItems.Select(item =>
-                {
-                    //fill in model values from the entity
-                    var bestCustomersReportModel = new BestCustomersReportModel
-                    {
-                        CustomerId = item.CustomerId,
-                        OrderTotal = _priceFormatter.FormatPrice(item.OrderTotal, true, false),
-                        OrderCount = item.OrderCount
-                    };
-
-                    //fill in additional values (not existing in the entity)
-                    var customer = _customerService.GetCustomerById(item.CustomerId);
-                    if (customer != null)
-                    {
-                        bestCustomersReportModel.CustomerName = customer.IsRegistered() ? customer.Email :
-                            _localizationService.GetResource("Admin.Customers.Guest");
-                    }
-
-                    return bestCustomersReportModel;
-                }),
-                Total = reportItems.TotalCount
-            };
-
-            return model;
-        }
-
-        /// <summary>
-        /// Prepare paged registered customers report list model
-        /// </summary>
-        /// <param name="searchModel">Registered customers report search model</param>
-        /// <returns>Registered customers report list model</returns>
-        public virtual RegisteredCustomersReportListModel PrepareRegisteredCustomersReportListModel(RegisteredCustomersReportSearchModel searchModel)
-        {
-            if (searchModel == null)
-                throw new ArgumentNullException(nameof(searchModel));
-
-            //get report items
-            var reportItems = new List<RegisteredCustomersReportModel>
-            {
-                new RegisteredCustomersReportModel
-                {
-                    Period = _localizationService.GetResource("Admin.Customers.Reports.RegisteredCustomers.Fields.Period.7days"),
-                    Customers = _customerReportService.GetRegisteredCustomersReport(7)
-                },
-                new RegisteredCustomersReportModel
-                {
-                    Period = _localizationService.GetResource("Admin.Customers.Reports.RegisteredCustomers.Fields.Period.14days"),
-                    Customers = _customerReportService.GetRegisteredCustomersReport(14)
-                },
-                new RegisteredCustomersReportModel
-                {
-                    Period = _localizationService.GetResource("Admin.Customers.Reports.RegisteredCustomers.Fields.Period.month"),
-                    Customers = _customerReportService.GetRegisteredCustomersReport(30)
-                },
-                new RegisteredCustomersReportModel
-                {
-                    Period = _localizationService.GetResource("Admin.Customers.Reports.RegisteredCustomers.Fields.Period.year"),
-                    Customers = _customerReportService.GetRegisteredCustomersReport(365)
-                }
-            };
-
-            //prepare list model
-            var model = new RegisteredCustomersReportListModel
-            {
-                Data = reportItems.PaginationByRequestModel(searchModel),
-                Total = reportItems.Count
-            };
-
-            return model;
-        }
+        }        
 
         /// <summary>
         /// Prepare paged customer shopping cart list model

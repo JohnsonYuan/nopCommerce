@@ -5606,7 +5606,7 @@ namespace Nop.Services.Installation
                 {
                     Name = MessageTemplateSystemNames.RecurringPaymentCancelledCustomerNotification,
                     Subject = "%Store.Name%. Recurring payment cancelled",
-                    Body = $"<p>{Environment.NewLine}<a href=\"%Store.URL%\">%Store.Name%</a>{Environment.NewLine}<br />{Environment.NewLine}<br />{Environment.NewLine}Hello %Customer.FullName%,{Environment.NewLine}<br />{Environment.NewLine}%if (%RecurringPayment.CancelAfterFailedPayment%) It appears your credit card didn't go through for this recurring payment (<a href=\"%Order.OrderURLForCustomer%\" target=\"_blank\">%Order.OrderURLForCustomer%</a>){Environment.NewLine}<br />{Environment.NewLine}So your subscription has been canceled. endif% %if (!%RecurringPayment.CancelAfterFailedPayment%) The recurring payment ID=%RecurringPayment.ID% was cancelled. endif%{Environment.NewLine}</p>{Environment.NewLine}",
+                    Body = $"<p>{Environment.NewLine}<a href=\"%Store.URL%\">%Store.Name%</a>{Environment.NewLine}<br />{Environment.NewLine}<br />{Environment.NewLine}Hello %Customer.FullName%,{Environment.NewLine}<br />{Environment.NewLine}%if (%RecurringPayment.CancelAfterFailedPayment%) It appears your credit card didn't go through for this recurring payment (<a href=\"%Order.OrderURLForCustomer%\" target=\"_blank\">%Order.OrderURLForCustomer%</a>){Environment.NewLine}<br />{Environment.NewLine}So your subscription has been cancelled. endif% %if (!%RecurringPayment.CancelAfterFailedPayment%) The recurring payment ID=%RecurringPayment.ID% was cancelled. endif%{Environment.NewLine}</p>{Environment.NewLine}",
                     IsActive = true,
                     EmailAccountId = eaGeneral.Id,
                 },
@@ -5926,7 +5926,8 @@ namespace Nop.Services.Installation
                 RenderXuaCompatible = false,
                 XuaCompatibleValue = "IE=edge",
                 BbcodeEditorOpenLinksInNewWindow = false,
-                PopupForTermsOfServiceLinks = true
+                PopupForTermsOfServiceLinks = true,
+                JqueryMigrateScriptLoggingActive = false
             });
 
             settingService.SaveSetting(new SeoSettings
@@ -11191,6 +11192,12 @@ namespace Nop.Services.Installation
                 },
                 new ActivityLogType
                 {
+                    SystemKeyword = "AddNewReviewType",
+                    Enabled = true,
+                    Name = "Add a new review type"
+                },
+                new ActivityLogType
+                {
                     SystemKeyword = "AddNewVendor",
                     Enabled = true,
                     Name = "Add a new vendor"
@@ -11404,6 +11411,12 @@ namespace Nop.Services.Installation
                     SystemKeyword = "DeleteReturnRequest",
                     Enabled = true,
                     Name = "Delete a return request"
+                },
+                new ActivityLogType
+                {
+                    SystemKeyword = "DeleteReviewType",
+                    Enabled = true,
+                    Name = "Delete a review type"
                 },
                 new ActivityLogType
                 {
@@ -11650,6 +11663,12 @@ namespace Nop.Services.Installation
                     SystemKeyword = "EditReturnRequest",
                     Enabled = true,
                     Name = "Edit a return request"
+                },
+                new ActivityLogType
+                {
+                    SystemKeyword = "EditReviewType",
+                    Enabled = true,
+                    Name = "Edit a review type"
                 },
                 new ActivityLogType
                 {

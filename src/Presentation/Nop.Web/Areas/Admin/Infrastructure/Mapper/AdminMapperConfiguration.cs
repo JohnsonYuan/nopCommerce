@@ -306,7 +306,8 @@ namespace Nop.Web.Areas.Admin.Infrastructure.Mapper
                 .ForMember(model => model.ShowSkuOnCatalogPages_OverrideForStore, options => options.Ignore())
                 .ForMember(model => model.ShowSkuOnProductDetailsPage_OverrideForStore, options => options.Ignore())
                 .ForMember(model => model.DisplayDatePreOrderAvailability_OverrideForStore, mo => mo.Ignore())
-                .ForMember(model => model.SortOptionSearchModel, options => options.Ignore());
+                .ForMember(model => model.SortOptionSearchModel, options => options.Ignore())
+                .ForMember(model => model.ReviewTypeSearchModel, options => options.Ignore());
             CreateMap<CatalogSettingsModel, CatalogSettings>()
                 .ForMember(settings => settings.AjaxProcessAttributeChange, options => options.Ignore())
                 .ForMember(settings => settings.CompareProductsNumber, options => options.Ignore())
@@ -354,6 +355,13 @@ namespace Nop.Web.Areas.Admin.Infrastructure.Mapper
             CreateMap<ManufacturerTemplate, ManufacturerTemplateModel>();
             CreateMap<ManufacturerTemplateModel, ManufacturerTemplate>();
 
+            //Review type
+            CreateMap<ReviewType, ReviewTypeModel>()
+                .ForMember(dest => dest.Locales, mo => mo.Ignore())
+                .ForMember(dest => dest.CustomProperties, mo => mo.Ignore())
+                .ForMember(dest => dest.Form, mo => mo.Ignore());
+
+            //products
             CreateMap<Product, ProductModel>()
                 .ForMember(model => model.AddPictureModel, options => options.Ignore())
                 .ForMember(model => model.AddSpecificationAttributeModel, options => options.Ignore())

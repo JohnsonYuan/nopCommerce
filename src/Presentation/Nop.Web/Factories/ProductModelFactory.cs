@@ -39,111 +39,114 @@ namespace Nop.Web.Factories
     {
         #region Fields
         
-        private readonly ISpecificationAttributeService _specificationAttributeService;
+        private readonly CaptchaSettings _captchaSettings;
+        private readonly CatalogSettings _catalogSettings;
+        private readonly CustomerSettings _customerSettings;
+        private readonly IAclService _aclService;
         private readonly ICategoryService _categoryService;
-        private readonly IManufacturerService _manufacturerService;
-        private readonly IProductService _productService;
-        private readonly IVendorService _vendorService;
-        private readonly IProductTemplateService _productTemplateService;
-        private readonly IProductAttributeService _productAttributeService;
-        private readonly IWorkContext _workContext;
-        private readonly IStoreContext _storeContext;
-        private readonly ITaxService _taxService;
         private readonly ICurrencyService _currencyService;
-        private readonly IPictureService _pictureService;
+        private readonly IDateRangeService _dateRangeService;
+        private readonly IDateTimeHelper _dateTimeHelper;
+        private readonly IDownloadService _downloadService;
         private readonly ILocalizationService _localizationService;
+        private readonly IManufacturerService _manufacturerService;
         private readonly IMeasureService _measureService;
+        private readonly IPermissionService _permissionService;
+        private readonly IPictureService _pictureService;
         private readonly IPriceCalculationService _priceCalculationService;
         private readonly IPriceFormatter _priceFormatter;
-        private readonly IWebHelper _webHelper;
-        private readonly IDateTimeHelper _dateTimeHelper;
-        private readonly IProductTagService _productTagService;
-        private readonly IAclService _aclService;
-        private readonly IStoreMappingService _storeMappingService;
-        private readonly IPermissionService _permissionService;
-        private readonly IDownloadService _downloadService;
         private readonly IProductAttributeParser _productAttributeParser;
-        private readonly IDateRangeService _dateRangeService;
+        private readonly IProductAttributeService _productAttributeService;
+        private readonly IProductService _productService;
+        private readonly IProductTagService _productTagService;
+        private readonly IProductTemplateService _productTemplateService;
+        private readonly IReviewTypeService _reviewTypeService;
+        private readonly ISpecificationAttributeService _specificationAttributeService;
+        private readonly IStaticCacheManager _cacheManager;
+        private readonly IStoreContext _storeContext;
+        private readonly IStoreMappingService _storeMappingService;
+        private readonly ITaxService _taxService;
+        private readonly IVendorService _vendorService;
+        private readonly IWebHelper _webHelper;
+        private readonly IWorkContext _workContext;
         private readonly MediaSettings _mediaSettings;
-        private readonly CatalogSettings _catalogSettings;
-        private readonly VendorSettings _vendorSettings;
-        private readonly CustomerSettings _customerSettings;
-        private readonly CaptchaSettings _captchaSettings;
         private readonly OrderSettings _orderSettings;
         private readonly SeoSettings _seoSettings;
-        private readonly IStaticCacheManager _cacheManager;
+        private readonly VendorSettings _vendorSettings;
 
         #endregion
 
         #region Ctor
 
-        public ProductModelFactory(ISpecificationAttributeService specificationAttributeService,
+        public ProductModelFactory(CaptchaSettings captchaSettings,
+            CatalogSettings catalogSettings,
+            CustomerSettings customerSettings,
+            IAclService aclService,
             ICategoryService categoryService,
-            IManufacturerService manufacturerService,
-            IProductService productService,
-            IVendorService vendorService,
-            IProductTemplateService productTemplateService,
-            IProductAttributeService productAttributeService,
-            IWorkContext workContext,
-            IStoreContext storeContext,
-            ITaxService taxService,
             ICurrencyService currencyService,
-            IPictureService pictureService,
+            IDateRangeService dateRangeService,
+            IDateTimeHelper dateTimeHelper,
+            IDownloadService downloadService,
             ILocalizationService localizationService,
+            IManufacturerService manufacturerService,
             IMeasureService measureService,
+            IPermissionService permissionService,
+            IPictureService pictureService,
             IPriceCalculationService priceCalculationService,
             IPriceFormatter priceFormatter,
-            IWebHelper webHelper,
-            IDateTimeHelper dateTimeHelper,
-            IProductTagService productTagService,
-            IAclService aclService,
-            IStoreMappingService storeMappingService,
-            IPermissionService permissionService,
-            IDownloadService downloadService,
             IProductAttributeParser productAttributeParser,
-            IDateRangeService dateRangeService,
+            IProductAttributeService productAttributeService,
+            IProductService productService,
+            IProductTagService productTagService,
+            IProductTemplateService productTemplateService,
+            IReviewTypeService reviewTypeService,
+            ISpecificationAttributeService specificationAttributeService,
+            IStaticCacheManager cacheManager,
+            IStoreContext storeContext,
+            IStoreMappingService storeMappingService,
+            ITaxService taxService,
+            IVendorService vendorService,
+            IWebHelper webHelper,
+            IWorkContext workContext,
             MediaSettings mediaSettings,
-            CatalogSettings catalogSettings,
-            VendorSettings vendorSettings,
-            CustomerSettings customerSettings,
-            CaptchaSettings captchaSettings,
             OrderSettings orderSettings,
             SeoSettings seoSettings,
-            IStaticCacheManager cacheManager)
+            VendorSettings vendorSettings)
         {
-            this._specificationAttributeService = specificationAttributeService;
+            this._captchaSettings = captchaSettings;
+            this._catalogSettings = catalogSettings;
+            this._customerSettings = customerSettings;
+            this._aclService = aclService;
             this._categoryService = categoryService;
-            this._manufacturerService = manufacturerService;
-            this._productService = productService;
-            this._vendorService = vendorService;
-            this._productTemplateService = productTemplateService;
-            this._productAttributeService = productAttributeService;
-            this._workContext = workContext;
-            this._storeContext = storeContext;
-            this._taxService = taxService;
             this._currencyService = currencyService;
-            this._pictureService = pictureService;
+            this._dateRangeService = dateRangeService;
+            this._dateTimeHelper = dateTimeHelper;
+            this._downloadService = downloadService;
             this._localizationService = localizationService;
+            this._manufacturerService = manufacturerService;
             this._measureService = measureService;
+            this._permissionService = permissionService;
+            this._pictureService = pictureService;
             this._priceCalculationService = priceCalculationService;
             this._priceFormatter = priceFormatter;
-            this._webHelper = webHelper;
-            this._dateTimeHelper = dateTimeHelper;
-            this._productTagService = productTagService;
-            this._aclService = aclService;
-            this._storeMappingService = storeMappingService;
-            this._permissionService = permissionService;
-            this._downloadService = downloadService;
             this._productAttributeParser = productAttributeParser;
-            this._dateRangeService = dateRangeService;
+            this._productAttributeService = productAttributeService;
+            this._productService = productService;
+            this._productTagService = productTagService;
+            this._productTemplateService = productTemplateService;
+            this._reviewTypeService = reviewTypeService;
+            this._specificationAttributeService = specificationAttributeService;
+            this._cacheManager = cacheManager;
+            this._storeContext = storeContext;
+            this._storeMappingService = storeMappingService;
+            this._taxService = taxService;
+            this._vendorService = vendorService;
+            this._webHelper = webHelper;
+            this._workContext = workContext;
             this._mediaSettings = mediaSettings;
-            this._catalogSettings = catalogSettings;
-            this._vendorSettings = vendorSettings;
-            this._customerSettings = customerSettings;
-            this._captchaSettings = captchaSettings;
             this._orderSettings = orderSettings;
             this._seoSettings = seoSettings;
-            this._cacheManager = cacheManager;
+            this._vendorSettings = vendorSettings;
         }
 
         #endregion
@@ -184,11 +187,13 @@ namespace Nop.Web.Factories
                     TotalReviews = product.ApprovedTotalReviews
                 };
             }
+
             if (productReview != null)
             {
                 productReview.ProductId = product.Id;
                 productReview.AllowCustomerReviews = product.AllowCustomerReviews;
             }
+
             return productReview;
         }
 
@@ -272,21 +277,25 @@ namespace Nop.Web.Factories
                 else
                 {
                     //prices
-                    var minPossiblePrice = _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer);
+                    var minPossiblePriceWithoutDiscount = _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: false);
+                    var minPossiblePriceWithDiscount = _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: true);
 
                     if (product.HasTierPrices)
                     {
                         //calculate price for the maximum quantity if we have tier prices, and choose minimal
-                        minPossiblePrice = Math.Min(minPossiblePrice,
-                            _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer,
-                                quantity: int.MaxValue));
+                        minPossiblePriceWithoutDiscount = Math.Min(minPossiblePriceWithoutDiscount,
+                            _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: false, quantity: int.MaxValue));
+                        minPossiblePriceWithDiscount = Math.Min(minPossiblePriceWithDiscount,
+                            _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: true, quantity: int.MaxValue));
                     }
 
-                    var oldPriceBase = _taxService.GetProductPrice(product, product.OldPrice, out decimal taxRate);
-                    var finalPriceBase = _taxService.GetProductPrice(product, minPossiblePrice, out taxRate);
+                    var oldPriceBase = _taxService.GetProductPrice(product, product.OldPrice, out decimal _);
+                    var finalPriceWithoutDiscountBase = _taxService.GetProductPrice(product, minPossiblePriceWithoutDiscount, out _);
+                    var finalPriceWithDiscountBase = _taxService.GetProductPrice(product, minPossiblePriceWithDiscount, out _);
 
                     var oldPrice = _currencyService.ConvertFromPrimaryStoreCurrency(oldPriceBase, _workContext.WorkingCurrency);
-                    var finalPrice = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceBase, _workContext.WorkingCurrency);
+                    var finalPriceWithoutDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceWithoutDiscountBase, _workContext.WorkingCurrency);
+                    var finalPriceWithDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceWithDiscountBase, _workContext.WorkingCurrency);
 
                     //do we have tier prices configured?
                     var tierPrices = new List<TierPrice>();
@@ -299,37 +308,35 @@ namespace Nop.Web.Factories
                             .RemoveDuplicatedQuantities());
                     }
                     //When there is just one tier price (with  qty 1), there are no actual savings in the list.
-                    var displayFromMessage = tierPrices.Any() &&
-                                             !(tierPrices.Count == 1 && tierPrices[0].Quantity <= 1);
+                    var displayFromMessage = tierPrices.Any() && !(tierPrices.Count == 1 && tierPrices[0].Quantity <= 1);
                     if (displayFromMessage)
                     {
                         priceModel.OldPrice = null;
-                        priceModel.Price = string.Format(_localizationService.GetResource("Products.PriceRangeFrom"),
-                            _priceFormatter.FormatPrice(finalPrice));
-                        priceModel.PriceValue = finalPrice;
+                        priceModel.Price = string.Format(_localizationService.GetResource("Products.PriceRangeFrom"), _priceFormatter.FormatPrice(finalPriceWithDiscount));
+                        priceModel.PriceValue = finalPriceWithDiscount;
                     }
                     else
                     {
-                        if (finalPriceBase != oldPriceBase && oldPriceBase != decimal.Zero)
-                        {
-                            priceModel.OldPrice = _priceFormatter.FormatPrice(oldPrice);
-                            priceModel.Price = _priceFormatter.FormatPrice(finalPrice);
-                            priceModel.PriceValue = finalPrice;
-                        }
-                        else
-                        {
-                            priceModel.OldPrice = null;
-                            priceModel.Price = _priceFormatter.FormatPrice(finalPrice);
-                            priceModel.PriceValue = finalPrice;
-                        }
+                        var strikeThroughPrice = decimal.Zero;
+
+                        if (finalPriceWithoutDiscountBase != oldPriceBase && oldPriceBase > decimal.Zero)
+                            strikeThroughPrice = oldPrice;
+
+                        if (finalPriceWithoutDiscountBase != finalPriceWithDiscountBase)
+                            strikeThroughPrice = finalPriceWithoutDiscount;
+
+                        if(strikeThroughPrice > decimal.Zero)
+                            priceModel.OldPrice = _priceFormatter.FormatPrice(strikeThroughPrice);
+
+                        priceModel.Price = _priceFormatter.FormatPrice(finalPriceWithDiscount);
+                        priceModel.PriceValue = finalPriceWithDiscount;
                     }
+
                     if (product.IsRental)
                     {
                         //rental product
-                        priceModel.OldPrice = _priceFormatter.FormatRentalProductPeriod(product,
-                            priceModel.OldPrice);
-                        priceModel.Price = _priceFormatter.FormatRentalProductPeriod(product,
-                            priceModel.Price);
+                        priceModel.OldPrice = _priceFormatter.FormatRentalProductPeriod(product, priceModel.OldPrice);
+                        priceModel.Price = _priceFormatter.FormatRentalProductPeriod(product, priceModel.Price);
                     }
 
                     //property for German market
@@ -338,7 +345,7 @@ namespace Nop.Web.Factories
                     priceModel.DisplayTaxShippingInfo = _catalogSettings.DisplayTaxShippingInfoProductBoxes && product.IsShipEnabled && !product.IsFreeShipping;
 
                     //PAngV baseprice (used in Germany)
-                    priceModel.BasePricePAngV = product.FormatBasePrice(finalPriceBase, _localizationService, _measureService, _currencyService, _workContext, _priceFormatter);
+                    priceModel.BasePricePAngV = product.FormatBasePrice(finalPriceWithDiscount, _localizationService, _measureService, _currencyService, _workContext, _priceFormatter);
                 }
             }
             else
@@ -387,9 +394,7 @@ namespace Nop.Web.Factories
                     {
                         //calculate price for the maximum quantity if we have tier prices, and choose minimal
                         tmpMinPossiblePrice = Math.Min(tmpMinPossiblePrice,
-                            _priceCalculationService.GetFinalPrice(associatedProduct,
-                                _workContext.CurrentCustomer,
-                                quantity: int.MaxValue));
+                            _priceCalculationService.GetFinalPrice(associatedProduct, _workContext.CurrentCustomer, quantity: int.MaxValue));
                     }
 
                     if (minPossiblePrice.HasValue && tmpMinPossiblePrice >= minPossiblePrice.Value)
@@ -416,9 +421,7 @@ namespace Nop.Web.Factories
                     var finalPrice = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceBase, _workContext.WorkingCurrency);
 
                     priceModel.OldPrice = null;
-                    priceModel.Price = string.Format(
-                        _localizationService.GetResource("Products.PriceRangeFrom"),
-                        _priceFormatter.FormatPrice(finalPrice));
+                    priceModel.Price = string.Format(_localizationService.GetResource("Products.PriceRangeFrom"),_priceFormatter.FormatPrice(finalPrice));
                     priceModel.PriceValue = finalPrice;
 
                     //PAngV baseprice (used in Germany)
@@ -587,9 +590,9 @@ namespace Nop.Web.Factories
                     }
                     else
                     {
-                        var oldPriceBase = _taxService.GetProductPrice(product, product.OldPrice, out decimal taxRate);
-                        var finalPriceWithoutDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: false), out taxRate);
-                        var finalPriceWithDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: true), out taxRate);
+                        var oldPriceBase = _taxService.GetProductPrice(product, product.OldPrice, out decimal _);
+                        var finalPriceWithoutDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: false), out _);
+                        var finalPriceWithDiscountBase = _taxService.GetProductPrice(product, _priceCalculationService.GetFinalPrice(product, _workContext.CurrentCustomer, includeDiscounts: true), out _);
 
                         var oldPrice = _currencyService.ConvertFromPrimaryStoreCurrency(oldPriceBase, _workContext.WorkingCurrency);
                         var finalPriceWithoutDiscount = _currencyService.ConvertFromPrimaryStoreCurrency(finalPriceWithoutDiscountBase, _workContext.WorkingCurrency);
@@ -1406,10 +1409,25 @@ namespace Nop.Web.Factories
                 ? productReviews.OrderBy(pr => pr.CreatedOnUtc)
                 : productReviews.OrderByDescending(pr => pr.CreatedOnUtc);
 
+            //get all review types
+            foreach (var reviewType in _reviewTypeService.GetAllReviewTypes())
+            {
+                model.ReviewTypeList.Add(new ReviewTypeModel
+                {
+                    Id = reviewType.Id,
+                    Name = reviewType.GetLocalized(entity => entity.Name),
+                    Description = reviewType.GetLocalized(entity => entity.Description),
+                    VisibleToAllCustomers = reviewType.VisibleToAllCustomers,
+                    DisplayOrder = reviewType.DisplayOrder,
+                    IsRequired = reviewType.IsRequired,                    
+                });
+            }            
+
+            //filling data from db
             foreach (var pr in productReviews)
             {
                 var customer = pr.Customer;
-                model.Items.Add(new ProductReviewModel
+                var productReviewModel = new ProductReviewModel
                 {
                     Id = pr.Id,
                     CustomerId = pr.CustomerId,
@@ -1426,8 +1444,55 @@ namespace Nop.Web.Factories
                         HelpfulNoTotal = pr.HelpfulNoTotal,
                     },
                     WrittenOnStr = _dateTimeHelper.ConvertToUserTime(pr.CreatedOnUtc, DateTimeKind.Utc).ToString("g"),
-                });
+                };
+
+                foreach (var q in _reviewTypeService.GetProductReviewReviewTypeMappingsByProductReviewId(pr.Id))
+                {                  
+                    productReviewModel.AdditionalProductReviewList.Add(new ProductReviewReviewTypeMappingModel
+                    {
+                        ReviewTypeId = q.ReviewTypeId,
+                        ProductReviewId = pr.Id,
+                        Rating = q.Rating,
+                        Name = q.ReviewType.GetLocalized(x => x.Name),
+                        VisibleToAllCustomers = q.ReviewType.VisibleToAllCustomers || _workContext.CurrentCustomer.Id == pr.CustomerId,
+                    });
+                }
+
+                model.Items.Add(productReviewModel);
             }
+
+            foreach (var rt in model.ReviewTypeList)
+            {
+                if (model.ReviewTypeList.Count <= model.AddAdditionalProductReviewList.Count) continue;
+                var reviewType = _reviewTypeService.GetReviewTypeById(rt.Id);
+                var reviewTypeMappingModel = new AddProductReviewReviewTypeMappingModel
+                {
+                    ReviewTypeId = rt.Id,
+                    Name = reviewType.GetLocalized(entity => entity.Name),
+                    Description = reviewType.GetLocalized(entity => entity.Description),
+                    DisplayOrder = rt.DisplayOrder,
+                    IsRequired = rt.IsRequired,
+                };
+
+                model.AddAdditionalProductReviewList.Add(reviewTypeMappingModel);
+            }
+
+            //Average rating
+            foreach (var rtm in model.ReviewTypeList)
+            {
+                var totalRating = 0;
+                var totalCount = 0;
+                foreach (var item in model.Items)
+                {
+                    foreach (var q in item.AdditionalProductReviewList.Where(w => w.ReviewTypeId == rtm.Id))
+                    {
+                        totalRating += q.Rating;
+                        totalCount = ++totalCount;
+                    }
+                }
+
+                rtm.AverageRating = (double)totalRating / (totalCount > 0 ? totalCount : 1);
+            }          
 
             model.AddProductReview.CanCurrentCustomerLeaveReview = _catalogSettings.AllowAnonymousUsersToReviewProduct || !_workContext.CurrentCustomer.IsGuest();
             model.AddProductReview.DisplayCaptcha = _captchaSettings.Enabled && _captchaSettings.ShowOnProductReviewPage;
@@ -1479,6 +1544,18 @@ namespace Nop.Web.Factories
                         ? _localizationService.GetResource("Account.CustomerProductReviews.ApprovalStatus.Approved")
                         : _localizationService.GetResource("Account.CustomerProductReviews.ApprovalStatus.Pending");
                 }
+
+                foreach (var q in _reviewTypeService.GetProductReviewReviewTypeMappingsByProductReviewId(review.Id))
+                {
+                    productReviewModel.AdditionalProductReviewList.Add(new ProductReviewReviewTypeMappingModel
+                    {
+                        ReviewTypeId = q.ReviewTypeId,
+                        ProductReviewId = review.Id,
+                        Rating = q.Rating,
+                        Name = q.ReviewType.GetLocalized(x => x.Name),
+                    });
+                }
+
                 productReviews.Add(productReviewModel);
             }
 
